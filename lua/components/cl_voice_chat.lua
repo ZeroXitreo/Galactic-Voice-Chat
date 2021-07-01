@@ -240,7 +240,7 @@ end
 function component:HUDShouldDraw(name)
 	local hideNames = {CHudVoiceStatus = true, CHudVoiceSelfStatus = true}
 	if hideNames[name] then
-		print(name)
+		//print(name)
 		return false
 	end
 end
