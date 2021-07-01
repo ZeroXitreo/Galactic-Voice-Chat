@@ -1,6 +1,6 @@
 local component = {}
-component.dependencies = {"theme", "voiceChat", "menu"}
-component.title = "Voice Chat"
+component.dependencies = {"theme", "voiceChat", "menu", "voiceChatSpec"}
+component.title = "Voice chat menu"
 component.description = "Enables you to edit the design of your own chat line"
 component.icon = "music"
 component.width = 280
@@ -18,7 +18,9 @@ function component:InitializeTab(parent)
 
 	// VoiceMode
 	self.VoiceModeCategory = self:createCategoryPanel("Voice Mode");
-	self.VoiceMode = self:createComboBox(self.VoiceModeCategory);
+	self.VoiceMode = self.VoiceModeCategory:Add("DComboBox")
+	self.VoiceMode:Dock(TOP)
+	self.VoiceMode:DockMargin(10, 10, 10, 0)
 	self.VoiceMode:AddChoice("Sequence", galactic.voiceChat.bars.SEQUENCE, LocalPlayer().GVCSettings.VoiceMode == galactic.voiceChat.bars.SEQUENCE);
 	self.VoiceMode:AddChoice("Bottom", galactic.voiceChat.bars.BOTTOM, LocalPlayer().GVCSettings.VoiceMode == galactic.voiceChat.bars.BOTTOM);
 	self.VoiceMode:AddChoice("Top", galactic.voiceChat.bars.TOP, LocalPlayer().GVCSettings.VoiceMode == galactic.voiceChat.bars.TOP);
@@ -56,6 +58,10 @@ function component:InitializeTab(parent)
 		end
 	end)
 	self.PointsGap:SetValue(LocalPlayer().GVCSettings.PointsGap)
+
+
+	local pnl = self.window:Add("GaPlayerVoice")
+	pnl:Setup()
 end
 
 
@@ -87,15 +93,6 @@ function component:createNumSlider(name, panel, min, max, func)
 	numSlider.OnValueChanged = func;
 
 	return numSlider;
-end
-
-function component:createComboBox(panel)
-
-	local ComboBx = vgui.Create("DComboBox", panel)
-	ComboBx:Dock(TOP);
-	ComboBx:DockMargin(10, 10, 10, 0);
-
-	return ComboBx;
 end
 
 galactic:Register(component)

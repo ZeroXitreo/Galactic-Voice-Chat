@@ -1,11 +1,9 @@
 local component = {}
-component.dependencies = {"data"}
+component.dependencies = {"data", "network"}
 component.namespace = "voiceChat"
 component.title = "Voice Chat Core"
 
 component.netOnPlayerSettingsChanged = "GVCPlayerSettingsChange"
-component.tableName = "GVCPlayerSettingsChange"
-component.path = "shrun/VoiceChat.txt"
 component.bars = {}
 component.bars.BOTTOM = 1
 component.bars.TOP = 2
@@ -24,7 +22,6 @@ function component:Constructor()
 		util.AddNetworkString(self.netOnPlayerSettingsChanged)
 
 		net.Receive(self.netOnPlayerSettingsChanged, function(len, ply)
-
 			if not ply.GVCSettings then
 				for _, pl in ipairs(player.GetAll()) do
 					if ply != pl and pl.GVCSettings then
@@ -38,12 +35,13 @@ function component:Constructor()
 
 			ply.GVCSettings = net.ReadCompressedTable()
 
+			ply:SetNWInt(component.VoiceMode, 2)
+
 			net.Start(self.netOnPlayerSettingsChanged)
 			net.WriteEntity(ply)
 			net.WriteCompressedTable(ply.GVCSettings)
 			net.SendOmit(ply)
 		end)
-
 	else
 		net.Receive(self.netOnPlayerSettingsChanged, function(len)
 			ply = net.ReadEntity()
