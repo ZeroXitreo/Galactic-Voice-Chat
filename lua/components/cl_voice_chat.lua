@@ -27,6 +27,10 @@ function component:Constructor()
 			if not IsValid(self.ply) then return end
 
 			local settings = self.ply.GVCSettings or {}
+			settings.VoiceMode = settings.VoiceMode or math.random(1, 6)
+			settings.PointsPerSecond = settings.PointsPerSecond or math.random(4, 33)
+			settings.PointsWidth = settings.PointsWidth or math.random(1, 17)
+			settings.PointsGap = settings.PointsGap or math.random(0, 5)
 
 			local voice = self.ply:VoiceVolume()
 			if self.Shell then
